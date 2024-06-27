@@ -4,12 +4,15 @@
   "description": "basic backend",
   "main": "index.js",
   "scripts": {
-  
     "start": "index.js"
   },
   "keywords": [
     "node"
   ],
   "author": "kunal",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
 }
