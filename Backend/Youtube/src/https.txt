@@ -1,0 +1,46 @@
+all about http {hyper text transfer protocol}
+URL = uniform resource locator
+URI = uniform resource identifier
+URN = unifrom resource name
+metadata= data about data generally in key value pairs
+
+many types of http headers are there:-
+1. Request headers
+2. Response headers
+3. Payload headers (data)
+4. Representation headers(encoding and compression)
+
+# MOST COMMON headers
+1. accept: application/json
+2. user-agent
+3. authorization
+4. content types
+5. cookie
+6. cookie control
+
+
+# HTTPS method
+1. GET: retrieve a source
+2. HEAD: no message body only headers
+3. OPTIONS: what operations are available
+4. TRACE: loopback data
+5. DELETE: remove a resource
+6. PUT: replace a resource
+7. POST: interact with resource(add a resource generally)
+8. PATCH: change part of a resource
+
+
+#HTTPS STATUS CODE
+1xx= informational
+2xx= success
+3xx= redirection
+4xx= client error
+5xx= server error
+
+100= continue
+102= processing
+200= ok
+201=created
+202= accepted
+400= bad Request
+401= unauthorised
