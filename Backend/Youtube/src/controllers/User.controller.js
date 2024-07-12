@@ -261,7 +261,9 @@ const updateavatar=asyncHandler(async(req,res)=>{
     if(!avatarLocalPath){
       throw new ApiError(400,"Avatar file is required")
     }
+
     const avatar=await uploadOnCloudinary(avatarLocalPath)
+    
     if(!avatar){
       throw new ApiError(400,"Avatar file is required")
     }
@@ -286,6 +288,73 @@ const updatecoverimage=asyncHandler(async(req,res)=>{
 })
 
 
+// GET USER CHANNEL PROFILE
+const getuserchannelprofile=asyncHandler(async(req,res)=>{
+    const {username}=req.params // params is used to get the data from the url
+    if(!username?.trim()){
+      throw new ApiError(400,"Username is required")
+    }
+    
+    const channel = await User.aggregate([ // PIPELINES IN AGGREGATE
+        {
+            $match: {
+                username: username.toLowerCase()
+            }
+        }, // first stage
+        {
+            $lookup:{
+                from:"subscriptions",
+                localField:"_id",
+                foreignField:"channel",
+                as:"subscribers"
+            }
+        },
+        {
+            $lookup:{
+                from:"subscriptions",
+                localField:"_id",
+                foreignField:"subscriber",
+                as:"channels"
+            
+            }
+        },
+        {
+            $addFields:{
+                subscriberCount:{$size:"$subscribers"},
+                channelCount:{$size:"$channels"},
+                issubscribes:{
+                    $cond:{
+                        if:{$in:[req.user._id,"$subscribers.subscriber"]},
+                        then:true,
+                        else:false
+                    }
+                }
+
+            }
+        },
+        {
+            $project:{
+                username:1,
+                fullname:1,
+                subscriberCount:1,
+                channelCount:1,
+                avatar:1,
+                coverImage:1,
+                issubscribes:1
+
+            }
+        }
+    ])
+
+    if(!channel?.length){
+      throw new ApiError(404,"Channel not found")
+    }
+
+    return res.status(200).json(new ApiResponse(200,channel[0],"Channel details fetched successfully"))
+
+
+})
+
 
 export {
     registerUser,
@@ -295,6 +364,7 @@ export {
     updatepassword,
     getcurrentuser,
     updateavatar,
-    updatecoverimage
+    updatecoverimage,
+    getuserchannelprofile
 
 };
