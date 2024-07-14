@@ -16,6 +16,7 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
 
         // Split the token by dots and check if it has three parts
         const parts = token.split('.');
+        console.log("Parts:", parts);
         if (parts.length !== 3) {
             throw new ApiError(401, "Unauthorized request: Malformed token");
         }
